@@ -1,6 +1,7 @@
 package com.siopa.siopa_auth.payload.response;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a JWT object that is returned.
@@ -8,14 +9,14 @@ import java.util.List;
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private int id;
+    private UUID userId;
     private String username;
     private String email;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, int id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, UUID userId, String username, String email, List<String> roles) {
         this.token = accessToken;
-        this.id = id;
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.roles = roles;
@@ -37,12 +38,12 @@ public class JwtResponse {
         this.type = tokenType;
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int id) {
+        this.userId = userId;
     }
 
     public String getEmail() {

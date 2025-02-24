@@ -2,7 +2,6 @@ package com.siopa.siopa_auth.controllers;
 
 import com.siopa.siopa_auth.models.User;
 import com.siopa.siopa_auth.payload.request.LoginRequest;
-import com.siopa.siopa_auth.payload.request.PasswordResetRequest;
 import com.siopa.siopa_auth.payload.request.SignupRequest;
 import com.siopa.siopa_auth.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 /**
@@ -45,21 +45,12 @@ public class AuthController {
 
     /**
      * Route for getting details about a particular user.
+     *
      * @param userID
      * @return
      */
     @GetMapping("/users/{userID}")
-    public List<User> getUserDetails(@PathVariable int userID) {
+    public Optional<User> getUserDetails(@PathVariable UUID userID) {
         return authService.getUserDetails(userID);
-    }
-
-    /**
-     * Resets the password of a given account.
-     * @param passwordResetRequest
-     * @return
-     */
-    @PostMapping("/forgot_password")
-    public ResponseEntity<?> forgotPassword(@RequestBody PasswordResetRequest passwordResetRequest) {
-        return authService.resetPassword(passwordResetRequest);
     }
 }

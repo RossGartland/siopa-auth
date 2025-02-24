@@ -21,7 +21,7 @@ public class SignupRequest {
     private String surname;
     @NotBlank
     @Size(max = 50)
-    @Email //Enforces email format.
+    @Email
     private String email;
 
     private Set<String> role;
@@ -43,7 +43,7 @@ public class SignupRequest {
     }
 
     @NotBlank
-    @Size(min = 6, max = 40) //Enforces size restrictions.
+    @Size(min = 6, max = 40)
     private String password;
 
     public String getUsername() {

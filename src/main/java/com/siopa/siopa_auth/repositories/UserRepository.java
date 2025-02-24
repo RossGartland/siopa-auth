@@ -4,27 +4,21 @@ import com.siopa.siopa_auth.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Data access interface for user entity.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, UUID> {
+
     /**
      * Finds user by a given username.
      * @param username
-     * @return
+     * @return Optional<User>
      */
     Optional<User> findByUsername(String username);
-
-    /**
-     * Finds user by a given id.
-     * @param id
-     * @return
-     */
-    List<User> findById(int id);
 
     /**
      * Checks if username exists.
@@ -43,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Finds an account via an email address.
      * @param email
-     * @return
+     * @return Optional<User>
      */
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 }

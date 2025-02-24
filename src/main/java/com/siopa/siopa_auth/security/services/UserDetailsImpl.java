@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
-    private int id;
+    private UUID userId;
     private String username;
     private String forename;
     private String surname;
@@ -25,7 +26,7 @@ public class UserDetailsImpl implements UserDetails {
 
     /**
      * Constructor for user details implementation.
-     * @param id
+     * @param userId
      * @param username
      * @param forename
      * @param surname
@@ -33,9 +34,9 @@ public class UserDetailsImpl implements UserDetails {
      * @param password
      * @param authorities
      */
-    public UserDetailsImpl(int id, String username, String forename, String surname, String email, String password,
+    public UserDetailsImpl(UUID userId, String username, String forename, String surname, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
+        this.userId = userId;
         this.username = username;
         this.forename = forename;
         this.surname = surname;
@@ -54,7 +55,7 @@ public class UserDetailsImpl implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList()); //Creates role list for user.
         return new UserDetailsImpl(
-                user.getId(),
+                user.getUserId(),
                 user.getUsername(),
                 user.getForename(),
                 user.getSurname(),
@@ -68,8 +69,8 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-    public int getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
     public String getEmail() {
         return email;
@@ -111,6 +112,6 @@ public class UserDetailsImpl implements UserDetails {
         if (o == null || getClass() != o.getClass())
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(userId, userId);
     }
 }

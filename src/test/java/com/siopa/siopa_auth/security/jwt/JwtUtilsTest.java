@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,7 +70,7 @@ class JwtUtilsTest {
      * Helper method to create a mock authentication object with a given username.
      */
     private Authentication createMockAuthentication(String username) {
-        UserDetails userDetails = new UserDetailsImpl(1, username, "forename", "surname", "email",
+        UserDetails userDetails = new UserDetailsImpl(UUID.randomUUID(), username, "forename", "surname", "email",
                 "password", Collections.emptyList());
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }

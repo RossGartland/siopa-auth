@@ -4,7 +4,6 @@ import com.siopa.siopa_auth.models.ERole;
 import com.siopa.siopa_auth.models.Role;
 import com.siopa.siopa_auth.models.User;
 import com.siopa.siopa_auth.payload.request.LoginRequest;
-import com.siopa.siopa_auth.payload.request.PasswordResetRequest;
 import com.siopa.siopa_auth.payload.request.SignupRequest;
 import com.siopa.siopa_auth.payload.response.JwtResponse;
 import com.siopa.siopa_auth.payload.response.MessageResponse;
@@ -20,12 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -48,10 +43,11 @@ public class AuthService {
 
     /**
      * Gets user details corresponding to a given id.
+     *
      * @param userID
      * @return
      */
-    public List<User> getUserDetails(int userID) {return userRepository.findById(userID);}
+    public Optional<User> getUserDetails(UUID userID) {return userRepository.findById(userID);}
 
     /**
      * Sign in user.
@@ -72,7 +68,7 @@ public class AuthService {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
+                userDetails.getUserId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
@@ -131,21 +127,4 @@ public class AuthService {
         userRepository.save(user); //Save user to the database.
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
-
-    /**
-     * Resets the password of a given account.
-     * @param passwordResetRequest
-     * @return
-     */
-    public ResponseEntity<?> resetPassword(PasswordResetRequest passwordResetRequest) {
-        User user = userRepository.findByEmail(passwordResetRequest.email);
-        if(user != null) {
-            user.setPassword(encoder.encode(passwordResetRequest.newPassword));
-            userRepository.save(user);
-            return ResponseEntity.ok("password updated.");
-        } else {
-            throw new NullPointerException("Email not found" + passwordResetRequest.email);
-        }
-    }
-
 }
